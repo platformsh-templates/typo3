@@ -81,18 +81,16 @@ hooks:
 
         bash install-redis.sh 5.1.1
 
-        php src/installer.php install:setup
+        php vendor/bin/typo3cms install:setup --install-steps-config=src/SetupConfiguration.yaml --non-interactive --skip-extension-setup
+
         # Enable the install tool for 60mins after deployment
         touch public/typo3conf/ENABLE_INSTALL_TOOL
     deploy: |
         set -e
-        php src/installer.php install:wireconfig
         if [ ! -f var/platformsh.installed ]; then
-            php src/installer.php install:dbimport
-            php src/installer.php install:activateextensions
             # This creates the initial admin user with a default password.
             # *CHANGE THIS VALUE IMMEDIATELY AFTER INSTALLATION*
-            php src/installer.php install:createuser "admin" "password"
+            php vendor/bin/typo3cms install:setup --install-steps-config=src/SetupDatabase.yaml --site-setup-type=no --site-name="TYPO3 on Platform.sh" --admin-user-name=admin --admin-password=password --non-interactive
             touch var/platformsh.installed
         fi;
 
