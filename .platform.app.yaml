@@ -85,9 +85,18 @@ hooks:
 
         # Enable the install tool for 60mins after deployment
         touch public/typo3conf/ENABLE_INSTALL_TOOL
+
+        # Ensure to keep the checked-in LocalConfiguration available, but make the actual file writable later-on
+        # by creating a symlink which will be accesible below
+        if [ -f public/typo3conf/LocalConfiguration.php ]; then
+            mv public/typo3conf/LocalConfiguration.php public/typo3conf/LocalConfiguration.FromSource.php
+            ln -sf ../../var/LocalConfiguration.php public/typo3conf/LocalConfiguration.php
+        fi;
     deploy: |
         set -e
         if [ ! -f var/platformsh.installed ]; then
+            # copy the created LocalConfiguration into the writable location
+            cp public/typo3conf/LocalConfiguration.FromSource.php var/LocalConfiguration.php
             # This creates the initial admin user with a default password.
             # *CHANGE THIS VALUE IMMEDIATELY AFTER INSTALLATION*
             php vendor/bin/typo3cms install:setup --install-steps-config=src/SetupDatabase.yaml --site-setup-type=no --site-name="TYPO3 on Platform.sh" --admin-user-name=admin --admin-password=password --non-interactive
