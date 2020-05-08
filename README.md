@@ -6,7 +6,7 @@
 </a>
 </p>
 
-This template builds the TYPO3 CMS for Platform.sh.
+This template builds the latest 10.4.* release of the TYPO3 CMS for Platform.sh.
 
 TYPO3 is a Content Management System (CMS) built in PHP.
 
