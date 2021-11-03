@@ -12,7 +12,14 @@ type: php:7.4
 dependencies:
     php:
         composer/composer: '^2'
+    # needed for Template Tasks
+    python3:
+       pipenv: '*'
 
+
+variables:
+    env:
+        TEMPLATE_PROFILE: typo3
 runtime:
     # Enable the redis extension so TYPO3 can communicate with the Redis cache.
     extensions:
@@ -146,6 +153,9 @@ hooks:
             rm public/FIRST_INSTALL
         fi;
 
+        # Template maintenance tasks.
+        .platform-scripts/template/verify_updater.sh
+
     # The deploy hook runs after your application has been deployed and started.
     # Code cannot be modified at this point but the database is available.
     # The site is not accepting requests while this script runs so keep it
@@ -176,9 +186,19 @@ hooks:
             # Create file that indicates first deploy and installation has been completed.
             touch var/platformsh.installed
         fi;
+# Auto-update source operation
+source:
+    operations:
+        platform_update_dependencies:
+            command: .platform-scripts/template/operation.update_template.sh
+
+timezone: "Europe/Paris" # Change this to your timezone https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 
 crons:
      # Run TYPO3's Scheduler tasks every 5 minutes.
     typo3:
         spec: "*/5 * * * *"
         cmd: "vendor/bin/typo3 scheduler:run"
+    template_update:
+        spec: '0 3 * * *' # update in the middle of the night
+        cmd: .platform-scripts/template/crons.update.sh
