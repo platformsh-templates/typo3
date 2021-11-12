@@ -9,9 +9,11 @@
     "sort-packages": true
   },
   "require": {
+    "php": "<8.0",
     "helhum/typo3-console": "^6.0.0",
     "pixelant/pxa-lpeh": "^1.0",
     "platformsh/config-reader": "^2.4",
+    "psr/cache": "^1.0",
     "typo3/cms-about": "^10.4",
     "typo3/cms-backend": "^10.4",
     "typo3/cms-belog": "^10.4",
@@ -29,7 +31,7 @@
     "typo3/cms-impexp": "^10.4",
     "typo3/cms-info": "^10.4",
     "typo3/cms-install": "^10.4",
-    "typo3/cms-introduction": "^4.2",
+    "typo3/cms-introduction": "~4.3.2",
     "typo3/cms-recordlist": "^10.4",
     "typo3/cms-rte-ckeditor": "^10.4",
     "typo3/cms-seo": "^10.4",
