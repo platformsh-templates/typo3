@@ -181,4 +181,5 @@ crons:
      # Run TYPO3's Scheduler tasks every 5 minutes.
     typo3:
         spec: "*/5 * * * *"
-        cmd: "vendor/bin/typo3 scheduler:run"
+        commands:
+            start: "vendor/bin/typo3 scheduler:run"
