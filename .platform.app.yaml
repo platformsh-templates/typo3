@@ -69,7 +69,29 @@ web:
                     allow: true
                 '^/sitemap\.xml$':
                     allow: true
-
+      '/typo3':
+        root: public/typo3
+        passthru: '/typo3/index.php'
+        index:
+          - 'index.php'
+        allow: false
+        rules:
+          # Allow access to common static files.
+          '\.(jpe?g|png|gif|svgz?|css|js|map|ico|bmp|eot|woff2?|otf|ttf)$':
+            allow: true
+            passthru: false
+            expires: 1M
+          '^/(robots\.txt|sitemap\.xml)$':
+            allow: true
+          '/(wp-login\.php|wp-login|login\.php|wp-content|wp-admin|wp-cofigs\.php|wp-pot\.php|wp-404\.php|xmlrpc\.php|wp-load\.php|wp-json|cgi|CGI|home\.php|seo-joy\.cgi|light\.cgi|gastenboek\.php|bbs\.cgi|aska\.cgi|jax_guestbook\.php|wp/|phpmyadmin|phpMyAdmin|pma|sql|default\.htm|backup|bitcoin|admin\.php)':
+            passthru: false
+            allow: false
+          '(/tel:|test\.php|modules\.php|install\.php|autodiscover\.xml)':
+            passthru: false
+            allow: false
+          '\.(asp|aspx|esp|cgi|dat)$':
+            passthru: false
+            allow: false
         # Default Storage location where TYPO3 expects media resources to be located.
         # Writable at runtime with the mount `public/fileadmin`.
         '/fileadmin':
